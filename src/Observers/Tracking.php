@@ -3,10 +3,22 @@
 namespace PhpCollective\Tracker\Observers;
 
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Tracking
 {
+    protected $auth_id;
+
+    public function __construct()
+    {
+        if (! Auth::check()) {
+            return false;
+        }
+
+        $this->auth_id = Auth::id();
+    }
+
     /**
      * Listen to the Model creating event.
      *
@@ -15,10 +27,14 @@ class Tracking
      */
     public function creating(Model $model)
     {
-        if (Auth::check())
-        {
-            $model->created_by = Auth::id();
-        }
+        $model->{$model->getCreatedByColumn()} = $this->auth_id;
+    }
+
+    public function updated(Model $model)
+    {
+        DB::table($model->getTable())
+            ->where($model->getKeyName(), $model->{$model->getKeyName()})
+            ->update([$model->getUpdatedByColumn() => $this->auth_id]);
     }
 
     /**
@@ -29,9 +45,9 @@ class Tracking
      */
     public function deleted(Model $model)
     {
-        if (Auth::check())
+        if(isset($model->{$model->getDeletedByColumn()}))
         {
-            $model->deleted_by = Auth::id();
+            $model->{$model->getDeletedByColumn()} = $this->auth_id;
             $model->save();
         }
     }
@@ -44,7 +60,11 @@ class Tracking
      */
     public function restoring(Model $model)
     {
-        $model->deleted_by = null;
-        $model->save();
+        if(isset($model->{$model->getDeletedByColumn()}))
+        {
+            $model->{$model->getUpdatedByColumn()} = $this->auth_id;
+            $model->{$model->getDeletedByColumn()} = null;
+            $model->save();
+        }
     }
 }
