@@ -24,7 +24,7 @@ trait Trackable
     /**
      * Get the user who modify the model.
      */
-    public function moderator()
+    public function editor()
     {
         return $this->belongsTo(
             config('auth.providers.users.model'), Track::UPDATED_BY
