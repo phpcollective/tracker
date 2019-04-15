@@ -3,6 +3,7 @@
 namespace PhpCollective\Tracker;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Schema\Blueprint;
 
 class TrackingServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,12 @@ class TrackingServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Blueprint::macro('track', function (bool $usingSoftDelete = false) {
+            Track::columns($this, $usingSoftDelete);
+        });
 
+        Blueprint::macro('dropTrack', function (bool $usingSoftDelete = false) {
+            Track::dropColumns($this, $usingSoftDelete);
+        });
     }
 }
