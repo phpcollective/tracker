@@ -1,6 +1,6 @@
 {
     "name": "phpcollective/tracker",
-    "description": "An elegant multi level menu system for the Laravel framework.",
+    "description": "Track your Elequent Model",
     "keywords": [
         "laravel model tracker",
         "tracker"
