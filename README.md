@@ -92,7 +92,7 @@ $foo->destroyer;
 
 ## License
 
-Laravel Menu Maker is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Laravel Model Tracker is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 [ico-version]: https://img.shields.io/packagist/v/phpcollective/tracker.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
