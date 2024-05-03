@@ -32,7 +32,8 @@ class Tracking
 
     public function updated(Model $model)
     {
-        DB::table($model->getTable())
+        DB::connection($model->getConnectionName())
+            ->table($model->getTable())
             ->where($model->getKeyName(), $model->{$model->getKeyName()})
             ->update([$model->getUpdatedByColumn() => $this->auth_id]);
     }
